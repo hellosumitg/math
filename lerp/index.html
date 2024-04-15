@@ -19,34 +19,57 @@
       // making canvas full screen in size
       myCanvas.width = window.innerWidth;
       myCanvas.height = window.innerHeight;
-      const ctx = myCanvas.getContext('2d');
-
-      // // Defining 2 points on X-axis i.e 1-D linear interpolation
-      // const A = { x: 100, y: 200 };
-      // const B = { x: 800, y: 200 };
 
       // Defining 2 points on both X and Y axis i.e 2-D linear interpolation
       const A = { x: 100, y: 500 };
       const B = { x: 800, y: 30 };
 
-      // Implementing `lerp` for getting equally spaced points
-      const n = 10;
-      for (let i = 0; i <= n - 1; i++) {
-        // if const t=-0.2 or 1.2 (i.e if below `0` or above `1` then it is known as Extrapolation meaning moving outside of the points)
-        const t = i / (n - 1); // this means we want the value between a and b this(i.e `t`) far away from a relative to a & b
+      const ctx = myCanvas.getContext('2d');
 
-        // const C = {
-        //   x: lerp(A.x, B.x, t),
-        //   // y: 200, // for 1-D
-        //   y: lerp(A.y, B.y, t),
-        // };
+      // using Interpolation for animation
+      animate();
 
-        const C=vLerp(A, B, t)
-        // drawDot(C, 'C');
-        drawDot(C, '.' + i);
+      function animate() {
+        // ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); // for clearing the canvas and if we don't do that we are able to see effects of functions provided for `t` value gives very different results 
+
+        const sec = new Date().getTime() / 1000;
+        // console.log(sec);
+        // const t = sec - Math.floor(sec); // value between 0 to 1 and creates a linear animation moving from A --> B
+        // console.log(t);
+        // For more animation ideas we can look at `https://easings.net/' where we can find all css and typescript code for creating different of them
+        // Another website for checking or demonstrating our newly build expression for building our animation or graph can be `https://www.desmos.com/calculator`
+        const t = (Math.sin(sec * Math.PI) + 1) / 2; // timed animation by multiplying `sec` with `Pi`
+
+        const C = vLerp(A, B, t);
+        drawDot(C, '');
+
+        drawDot(A, 'A');
+        drawDot(B, 'B');
+
+        requestAnimationFrame(animate);
       }
-      drawDot(A, 'A');
-      drawDot(B, 'B');
+      // // Defining 2 points on X-axis i.e 1-D linear interpolation
+      // const A = { x: 100, y: 200 };
+      // const B = { x: 800, y: 200 };
+
+      // // Implementing `lerp` for getting equally spaced points
+      // const n = 10;
+      // for (let i = 0; i <= n - 1; i++) {
+      //   // if const t=-0.2 or 1.2 (i.e if below `0` or above `1` then it is known as Extrapolation meaning moving outside of the points)
+      //   const t = i / (n - 1); // this means we want the value between a and b this(i.e `t`) far away from a relative to a & b
+
+      //   // const C = {
+      //   //   x: lerp(A.x, B.x, t),
+      //   //   // y: 200, // for 1-D
+      //   //   y: lerp(A.y, B.y, t),
+      //   // };
+
+      //   const C = vLerp(A, B, t);
+      //   // drawDot(C, 'C');
+      //   drawDot(C, '.' + i);
+      // }
+      // drawDot(A, 'A');
+      // drawDot(B, 'B');
 
       // Linear interpolation is a mathematical method for constructing new data points(here Dots) within a range of known data points(here Dots).
       function lerp(a, b, t) {
