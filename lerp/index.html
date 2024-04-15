@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear Interpolation(i.e LERP)</title>
+    <style>
+      body {
+        /* removing the margin from the canvas */
+        margin: 0;
+        /* removing scroll bar from the sides of the canvas */
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+      // making canvas full screen in size
+      myCanvas.width = window.innerWidth;
+      myCanvas.height = window.innerHeight;
+      const ctx = myCanvas.getContext('2d');
+
+      // Defining 2 points on X-axis
+      const A = { x: 100, y: 200 };
+      const B = { x: 800, y: 200 };
+
+      drawDot(A, 'A');
+      drawDot(B, 'B');
+
+      const t = 1 / 2; // this means we want the value between a and b this(i.e `t`) far away from a relative to a & b
+      
+      const C = {
+        x: lerp(A.x, B.x, t),
+        y: 200,
+      };
+      drawDot(C, 'C');
+
+      // Linear interpolation is a mathematical method for constructing new data points(here Dots) within a range of known data points(here Dots).
+      function lerp(a, b, t) {
+        return a + (b - a) * t;// or `a*(1-t)+ b*t` can also be used due to weird behavior of floating point operations
+      }
+
+      function drawDot(position, label) {
+        // Drawing Dots or Points on the canvas
+
+        ctx.beginPath();
+
+        // creating circle
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+
+        // below arc() method is used to create an arc/curve i.e. circles, or parts of circles.
+        //Syntax: context.arc(x, y, r, sAngle Or StartAngle, eAngle Or EndAngle, counterclockwise);
+        // counterclockwise: This parameter specifies the drawing should be clockwise or anticlockwise. It is false by default which denotes clockwise.
+        ctx.arc(position.x, position.y, 20, 0, 360, false, 2 * Math.PI); // drawing the circle using Perimeter(i.e 2πr and here r=10px)
+        ctx.fill();
+        ctx.stroke();
+
+        // Naming and designing the circular Dot or point
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = 'bold 20px Arial';
+        ctx.fillText(label, position.x, position.y);
+      }
+    </script>
+  </body>
+</html>
