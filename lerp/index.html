@@ -24,13 +24,17 @@
       const A = { x: 100, y: 500 };
       const B = { x: 800, y: 30 };
 
+      // using Interpolation for color change(which can be seen during `transition` in CSS)
+      const orange = { r: 230, g: 150, b: 0 };
+      const blue = { r: 0, g: 70, b: 160 };
+
       const ctx = myCanvas.getContext('2d');
 
       // using Interpolation for animation
       animate();
 
       function animate() {
-        // ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); // for clearing the canvas and if we don't do that we are able to see effects of functions provided for `t` value gives very different results 
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); // for clearing the canvas and if we don't do that we are able to see effects of functions provided for `t` value gives very different results
 
         const sec = new Date().getTime() / 1000;
         // console.log(sec);
@@ -45,6 +49,10 @@
 
         drawDot(A, 'A');
         drawDot(B, 'B');
+
+        // changing color of our canvas(i.e background of the canvas)
+        const { r, g, b } = vLerp(orange, blue, t);
+        myCanvas.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
         requestAnimationFrame(animate);
       }
@@ -77,12 +85,22 @@
       }
 
       // function for interpolation in higher dimensions common notation for representation are `vLerp` or `Vector LERP` in various libraries and packages
+      // function vLerp(A, B, t) {
+      //   return {
+      //     // in this example only looking for 2-D
+      //     x: lerp(A.x, B.x, t),
+      //     y: lerp(A.y, B.y, t),
+      //   };
+      // }
+
+      // Making vLerp() more generalized not just effective to points but other attributes also
       function vLerp(A, B, t) {
-        return {
-          // in this example only looking for 2-D
-          x: lerp(A.x, B.x, t),
-          y: lerp(A.y, B.y, t),
-        };
+        const res = {};
+        for (let attr in A) {
+          // for-in loop used incase of object iteration
+          res[attr] = lerp(A[attr], B[attr], t);
+        }
+        return res;
       }
 
       function drawDot(position, label) {
