@@ -154,7 +154,7 @@
         // below arc() method is used to create an arc/curve i.e. circles, or parts of circles.
         //Syntax: context.arc(x, y, r, sAngle Or StartAngle, eAngle Or EndAngle, counterclockwise);
         // counterclockwise: This parameter specifies the drawing should be clockwise or anticlockwise. It is false by default which denotes clockwise.
-        ctx.arc(position.x, position.y, 20, 0, 360, false, 2 * Math.PI); // drawing the circle using Perimeter(i.e 2πr and here r=10px)
+        ctx.arc(position.x, position.y, 20, 0, 2 * Math.PI); // radius is `20`, `0` is starting angle and `2π` is ending angle
         ctx.fill();
         ctx.stroke();
 
