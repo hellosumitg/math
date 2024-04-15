@@ -28,7 +28,31 @@
       const orange = { r: 230, g: 150, b: 0 };
       const blue = { r: 0, g: 70, b: 160 };
 
+      const lowFreq = 200;
+      const highFreq = 600;
+      
       const ctx = myCanvas.getContext('2d');
+
+      // using Interpolation for sound
+      let osc = null;
+      let audioCtx = null;
+      myCanvas.onclick = function () {
+        if (audioCtx == null) {
+          // utilizing Web Audio API components
+          audioCtx = new (AudioContext ||
+            webkitAudioContext ||
+            window.webkitAudioContext)();
+          osc = audioCtx.createOscillator();
+          osc.frequency.value = 200;
+          osc.start();
+
+          const node = audioCtx.createGain();
+          node.gain.value = 0.1; // setting the audio gain percent to 10%
+
+          osc.connect(node);
+          node.connect(audioCtx.destination);
+        }
+      };
 
       // using Interpolation for animation
       animate();
@@ -53,6 +77,10 @@
         // changing color of our canvas(i.e background of the canvas)
         const { r, g, b } = vLerp(orange, blue, t);
         myCanvas.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+        if (osc) {
+          osc.frequency.value = lerp(lowFreq, highFreq, t);
+        }
 
         requestAnimationFrame(animate);
       }
