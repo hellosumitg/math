@@ -22,7 +22,7 @@
 
       // Defining 2 points on both X and Y axis i.e 2-D linear interpolation
       const A = { x: 100, y: 500 };
-      const B = { x: 800, y: 30 };
+      const B = { x: 800, y: 200 };
 
       // using Interpolation for color change(which can be seen during `transition` in CSS)
       const orange = { r: 230, g: 150, b: 0 };
@@ -30,7 +30,7 @@
 
       const lowFreq = 200;
       const highFreq = 600;
-      
+
       const ctx = myCanvas.getContext('2d');
 
       // using Interpolation for sound
@@ -81,6 +81,17 @@
         if (osc) {
           osc.frequency.value = lerp(lowFreq, highFreq, t);
         }
+
+        // using Interpolation for text
+        ctx.strokeStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.font = 'bold 40px Arial';
+        ctx.setLineDash([lerp(50, 100, t), 130]);
+        ctx.strokeText('click for sound', myCanvas.width / 2, 10);
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'; // for diminishing the color of text
+        ctx.fillText('click for sound', myCanvas.width / 2, 10);
 
         requestAnimationFrame(animate);
       }
